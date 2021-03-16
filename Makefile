@@ -24,7 +24,7 @@ debug: .build/$(EXECUTABLE_NAME)
 # You need to have valgrind installed in your machine to run this target
 # if not run -> sudo apt install valgrind
 leak-check: debug
-	@valgrind --track-origins=yes --leak-check=full -s --error-exitcode=1 .build/$(EXECUTABLE_NAME)
+	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all -s --error-exitcode=1 .build/$(EXECUTABLE_NAME)
 .PHONY: leak-check
 
 run:
