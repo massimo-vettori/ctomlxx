@@ -8,8 +8,9 @@ namespace toml {
 
    enum types { NIL, BOOL, INT, FLOAT, STRING };
 
-   struct invalid_type_cast { string reason; };
-   struct nil_param_content { string reason; };
+   struct name_error        { string name, reason; };
+   struct invalid_type_cast { string reason;       };
+   struct nil_param_content { string reason;       };
 
    class Generic {
       public:
