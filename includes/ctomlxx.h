@@ -13,6 +13,8 @@ namespace toml {
    struct name_error        { string name, reason; };
    struct invalid_type_cast { string reason;       };
    struct nil_param_content { string reason;       };
+   struct search_error      { string reason;       };
+   struct uncaught_error    { string reason;       };
 
    class Generic {
       public:
@@ -124,4 +126,23 @@ namespace toml {
          Generic* content   {nullptr};
    };
 
+   class Section {
+      public:
+         Section(const string& raw);
+
+         bool          has(const string& n)       const;
+         const Param&  get(const string& n)       const;
+         const Param&  at(size_t pos)             const;
+         const string& get_name()                 const;
+         void          append(const string& raw);
+
+
+         bool   empty()   const;
+         size_t size()    const;
+         bool undefined() const;
+      
+      private:
+         string        name;
+         vector<Param> params;
+   };
 }

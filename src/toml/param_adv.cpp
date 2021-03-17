@@ -45,10 +45,10 @@ void truncate(string &s, bool keep_left=true, char divider='=') {
 
 bool check_name(const string &s) {
   if (s.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_") != string::npos)
-    throw toml::name_error{s, "Parse: Names must contain only alphanumeric characters or _ dividers"};
+    throw toml::name_error{s, "Param names must contain only alphanumeric characters or _ dividers"};
 
   if (string("0123456789").find_first_of(s.at(0)) != string::npos)
-    throw toml::name_error{s, "Parse: Names must not start with a numeric character, use _ instead"};
+    throw toml::name_error{s, "Param names must not start with a numeric character, use _ instead"};
 
   return true;
 }

@@ -8,15 +8,12 @@ using namespace toml;
 
 int main() {
   try {
-    Param b("bool   = true");
-    Param i("int    = 99");
-    Param f("float  = -98.5462");
-    Param s("string = \"Hello there!!!\"");
-
-    cout << b.get_name() << ": " << b.to_bool() << endl;
-    cout << i.get_name() << ": " << i.to_int() << endl;
-    cout << f.get_name() << ": " << f.to_float() << endl;
-    cout << s.get_name() << ": " << s.to_string() << endl;
+    Section s(" [SectionTest001]  ");
+    s.append("      bool_value      =     true    ");
+    s.append("  float_value   =     10.21   ");
+    
+    cout << s.get_name() << endl;
+    cout << s.get("float_value").to_float() << endl;
   }
 
   catch (toml::invalid_type_cast itc) {
@@ -25,6 +22,10 @@ int main() {
 
   catch (toml::name_error ne) {
     cout << ne.reason << endl;
-    cout << "Details: {" << ne.name << " - caused the exception throw}" << endl;
+    cout << "Details: {'" << ne.name << "' - caused the exception throw}" << endl;
+  }
+
+  catch (...) {
+    cout << "Uncaught error occurred..." << endl;
   }
 }
