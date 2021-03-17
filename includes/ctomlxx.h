@@ -145,4 +145,18 @@ namespace toml {
          string        name;
          vector<Param> params;
    };
+
+   class Root {
+      public:
+         void append(const Section& s);
+
+         bool           has(const string& name) const;
+         const Section& get(const string& name) const;
+         const Section& at(size_t pos)          const;
+
+         bool empty()  const;
+         size_t size() const;
+
+         vector<Section> sections;
+   };
 }

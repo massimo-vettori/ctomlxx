@@ -12,8 +12,11 @@ int main() {
     s.append("      bool_value      =     true    ");
     s.append("  float_value   =     10.21   ");
     
-    cout << s.get_name() << endl;
-    cout << s.get("float_value").to_float() << endl;
+    Root r;
+    r.append(s);
+
+    cout << r.at(0).get("float_value").to_float() << endl;
+    cout << s.at(0).to_bool() << endl;
   }
 
   catch (toml::invalid_type_cast itc) {
