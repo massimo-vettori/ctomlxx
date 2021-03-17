@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 namespace toml {
 
@@ -100,7 +102,7 @@ namespace toml {
    class Param {
       public:
          Param(const string& raw);         
-         Param(Param& clone);
+         Param(const Param& clone);
          ~Param();
 
          bool          is_bool()   const;

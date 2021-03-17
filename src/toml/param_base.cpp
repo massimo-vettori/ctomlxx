@@ -2,7 +2,7 @@
 
 using namespace toml;
 
-Param::Param(Param& clone) {
+Param::Param(const Param& clone) {
    if (clone.content) {
       switch (clone.content->type_id()) {
          case BOOL:   content = new Bool(clone.content->to_bool());     break;
@@ -12,6 +12,9 @@ Param::Param(Param& clone) {
 
          default: content = new Generic;
       }
+
+      allocated = true;
+      name = clone.name;
    }
 }
 
