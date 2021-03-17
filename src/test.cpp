@@ -8,15 +8,15 @@ using namespace toml;
 
 int main() {
   try {
-    Section s(" [SectionTest001]  ");
-    s.append("      bool_value      =     true    ");
-    s.append("  float_value   =     10.21   ");
-    
     Root r;
-    r.append(s);
 
-    cout << r.at(0).get("float_value").to_float() << endl;
-    cout << s.at(0).to_bool() << endl;
+    Parser p;
+    p.load("./local/test.toml");
+    p.parse(r);
+    p.flush();
+
+    cout << r.get("test").get("nth").to_int() << endl;
+    cout << r.get("test").get("str").to_string() << endl;
   }
 
   catch (toml::invalid_type_cast itc) {

@@ -1,6 +1,8 @@
 #include <ctomlxx.h>
 
-using namespace toml;
+using toml::Root;
+using toml::Section;
+using toml::Param;
 
 void Root::append(const Section& s) {
   this->sections.push_back(s);

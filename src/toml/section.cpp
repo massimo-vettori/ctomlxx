@@ -1,6 +1,10 @@
 #include <ctomlxx.h>
 
-using namespace toml;
+using toml::Section;
+using toml::Param;
+using toml::uncaught_error;
+using toml::name_error;
+using toml::search_error;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void check_section_name(const string &s) {

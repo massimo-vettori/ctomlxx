@@ -15,6 +15,7 @@ namespace toml {
    struct nil_param_content { string reason;       };
    struct search_error      { string reason;       };
    struct uncaught_error    { string reason;       };
+   struct load_error        { string reason;       };
 
    class Generic {
       public:
@@ -156,7 +157,18 @@ namespace toml {
 
          bool empty()  const;
          size_t size() const;
-
+      
+      private:
          vector<Section> sections;
+   };
+
+   class Parser {
+      public:
+         void load(const string& path);
+         void parse(Root& file) const;
+         void flush();
+
+      private:
+         vector<string> lines;
    };
 }

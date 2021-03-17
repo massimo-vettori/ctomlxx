@@ -44,6 +44,9 @@ void truncate(string &s, bool keep_left=true, char divider='=') {
 }
 
 bool check_name(const string &s) {
+  if (s.empty()) 
+    throw toml::name_error{s, "Param names must have some characters"};
+
   if (s.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_") != string::npos)
     throw toml::name_error{s, "Param names must contain only alphanumeric characters or _ dividers"};
 
@@ -54,6 +57,7 @@ bool check_name(const string &s) {
 }
 
 types parse_type(const string& r) {
+  if (r.empty())                                         return types::NIL;
   if (r == "true" or r == "false")                       return types::BOOL;
   if (r.at(0) == '"' and r.at(r.length()-1) == '"')      return types::STRING;
   if (r.find_first_not_of("0123456789") == string::npos) return types::INT;
