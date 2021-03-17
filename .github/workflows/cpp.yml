@@ -1,0 +1,21 @@
+name: Build (C++)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install valgrind 
+      run: sudo apt install valgrind   
+    - name: build for debug
+      run: make debug
+    - name: check for memory leaks
+      run: make leak-check
