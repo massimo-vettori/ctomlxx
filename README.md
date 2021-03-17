@@ -1,3 +1,4 @@
+[![Build (C++)](https://github.com/massimo-vettori/ctomlxx/actions/workflows/cpp.yml/badge.svg)](https://github.com/massimo-vettori/ctomlxx/actions/workflows/cpp.yml)
 # cTOMLxx ~ Simple TOML Parser
 This `c++` TOML parser library can allow your code to load external `.toml` files containing configuration properties in order to change them without needing to recompile the entire project
 
