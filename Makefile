@@ -1,7 +1,7 @@
 SUFFIXES += .d
 
 CXX    = g++
-CFLAGS = -pedantic -std=c++11 -Wall -Wextra -I includes/
+CFLAGS = -pedantic -std=c++11 -Wall -Wextra -I includes/ -fpic
 DFLAGS = -MT $@ -MMD -MF .build/deps/$*.d
 
 srcs := $(shell find src/ -name *.cpp) # tested only in linux
@@ -9,32 +9,15 @@ objs := $(patsubst src/%.cpp, .build/obj/%.o, $(srcs))
 deps := $(patsubst src/%.cpp, .build/deps/%.d, $(srcs))
 
 EXECUTABLE_NAME = parser # change this to the actual name of your executable
+LIBRARY_NAME = libtoml.a
 
 
-release: LFLAGS  = -O3 -s
-release: CFLAGS += -O3 -s
-release: .build/$(EXECUTABLE_NAME)
-.PHONY: release
+all: .build/lib/$(LIBRARY_NAME)
 
-debug: LFLAGS  = -ggdb -g3
-debug: CFLAGS += -ggdb -g3
-debug: .build/$(EXECUTABLE_NAME)
-.PHONY: debug
-
-# You need to have valgrind installed in your machine to run this target
-# if not run -> sudo apt install valgrind
-leak-check: debug
-	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all -s --error-exitcode=1 .build/$(EXECUTABLE_NAME)
-.PHONY: leak-check
-
-run:
-	@.build/$(EXECUTABLE_NAME)
-.PHONY: run
-
-
-.build/$(EXECUTABLE_NAME): $(objs)
-	@echo " [Link]: ..... linking final executable '$@'"
-	@$(CXX) $(LFLAGS) -o $@ $^
+.build/lib/$(LIBRARY_NAME): $(objs)
+	@echo " [Link]: ..... linking static library '$@'"
+	@mkdir -p .build/lib/
+	@ar crs $@ $^
 
 .build/deps/%.d: src/%.cpp
 	@mkdir -p $(dir $@)

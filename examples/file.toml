@@ -1,0 +1,5 @@
+[test]
+  b = false
+  i = 13
+  f = 9.99
+  s = "Hello There"
