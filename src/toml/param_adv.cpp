@@ -107,7 +107,7 @@ Param::Param(const string& raw) {
   smart_strip(left);
   smart_strip(right);
   
-  if (check_name(left)) {
+  if ((left != right) and check_name(left)) {
     this->name = left;
     types type = parse_type(right);
     allocated  = true;

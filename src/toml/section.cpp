@@ -54,7 +54,9 @@ const string& Section::get_name() const {
 }
 
 void Section::append(const string& raw) {
-  this->params.push_back(Param(raw));
+  Param tmp(raw);
+  if (tmp.type_id() != NIL)
+    this->params.push_back(tmp);
 }
 
 bool Section::empty() const {
