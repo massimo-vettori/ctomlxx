@@ -1,7 +1,8 @@
 [test]
-  b = false
+  b = true
   i = 13
   f = 9.99
   # Now it will handle also empty lines
 
   s = "Hello There"
+  a = [1, 2, [2]]

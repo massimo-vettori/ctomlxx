@@ -53,6 +53,16 @@ const string& Section::get_name() const {
   return this->name;
 }
 
+
+const Param& Section::operator[](const string& n) const {
+  return this->get(n);
+}
+
+const Param& Section::operator[](size_t pos) const {
+  return this->at(pos);
+}
+
+
 void Section::append(const string& raw) {
   Param tmp(raw);
   if (tmp.type_id() != NIL)

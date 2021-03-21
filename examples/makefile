@@ -10,9 +10,14 @@ all: .build/test
 
 
 
+run: all
+	@.build/test
 
 leak-check: .build/test
 	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all -s --error-exitcode=1 .build/test
 
 clean:
 	@rm -r .build/obj/
+
+reset:
+	@rm -r .build/

@@ -28,6 +28,16 @@ const Section& Root::at(size_t pos) const {
   return this->sections.at(pos);
 }
 
+
+const Section& Root::operator[](const string& n) const {
+  return this->get(n);
+}
+
+const Section& Root::operator[](size_t pos) const {
+  return this->at(pos);
+}
+
+
 size_t Root::size() const {
   return this->sections.size();
 }

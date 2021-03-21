@@ -131,10 +131,12 @@ namespace toml {
       public:
          Section(const string& raw);
 
-         bool          has(const string& n)       const;
-         const Param&  get(const string& n)       const;
-         const Param&  at(size_t pos)             const;
-         const string& get_name()                 const;
+         bool          has(const string& n)           const;
+         const Param&  get(const string& n)           const;
+         const Param&  at(size_t pos)                 const;
+         const string& get_name()                     const;
+         const Param&  operator[](const string& name) const;
+         const Param&  operator[](size_t pos)         const;
          void          append(const string& raw);
 
 
@@ -151,9 +153,11 @@ namespace toml {
       public:
          void append(const Section& s);
 
-         bool           has(const string& name) const;
-         const Section& get(const string& name) const;
-         const Section& at(size_t pos)          const;
+         bool           has(const string& name)        const;
+         const Section& get(const string& name)        const;
+         const Section& at(size_t pos)                 const;
+         const Section& operator[](const string& name) const;
+         const Section& operator[](size_t pos)         const;
 
          bool empty()  const;
          size_t size() const;
