@@ -4,11 +4,12 @@ using namespace toml;
 
 Param::Param(const Param& clone) {
    if (clone.content) {
-      switch (clone.content->type_id()) {
+      switch (clone.type_id()) {
          case BOOL:   content = new Bool(clone.content->to_bool());     break;
          case INT:    content = new Int(clone.content->to_int());       break;
          case FLOAT:  content = new Float(clone.content->to_float());   break;
          case STRING: content = new String(clone.content->to_string()); break;
+         case VECTOR: content = new Vector(clone.content->to_vector()); break;
 
          default: content = new Generic;
       }
@@ -28,6 +29,7 @@ bool Param::is_bool()   const { return allocated and content->is_bool();   }
 bool Param::is_int()    const { return allocated and content->is_int();    }
 bool Param::is_float()  const { return allocated and content->is_float();  }
 bool Param::is_string() const { return allocated and content->is_string(); }
+bool Param::is_vector() const { return allocated and content->is_vector(); }
 
 types Param::type_id()          const { return allocated ? content->type_id() : types::NIL; }
 const string& Param::get_name() const { return this->name;                                  }
@@ -50,4 +52,9 @@ float Param::to_float() const {
 const string& Param::to_string() const {
    if (not allocated) throw nil_param_content{"The content of this toml::Param instance is null!"};
    return this->content->to_string();
+}
+
+const vector<Param>& Param::to_vector() const {
+   if (not allocated) throw nil_param_content{"The content of this toml::Param instance is null!"};
+   return this->content->to_vector();
 }

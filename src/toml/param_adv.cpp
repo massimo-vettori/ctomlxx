@@ -1,4 +1,5 @@
 #include <ctomlxx.h>
+#include <iostream>
 
 using namespace toml;
 
@@ -17,7 +18,7 @@ size_t smart_find(char c, const string &s, size_t start=0, bool is_list=false) {
     }
 
     if (not str and s.at(i) == c and not brackets) return i;
-    if (s.at(i) == '"')           str = not str;
+    if (s.at(i) == '"') str = not str;
   }
 
   return string::npos;
@@ -43,6 +44,22 @@ void truncate(string &s, bool keep_left=true, char divider='=') {
   }
 }
 
+void smart_split(const string &s, vector<string> &out) {
+  size_t start = 0;
+  size_t comma = 0;
+  do {
+    string tmp;
+
+    comma = smart_find(',', s, start, true);
+    tmp   = s.substr(start, comma - start);
+
+    if (not tmp.empty())
+      out.push_back(tmp);
+      
+    start = comma+1;
+  } while(comma != string::npos);
+}
+
 bool check_name(const string &s) {
   if (s.empty()) 
     throw toml::name_error{s, "Param names must have some characters"};
@@ -60,6 +77,7 @@ types parse_type(const string& r) {
   if (r.empty())                                         return types::NIL;
   if (r == "true" or r == "false")                       return types::BOOL;
   if (r.at(0) == '"' and r.at(r.length()-1) == '"')      return types::STRING;
+  if (r.at(0) == '[' and r.at(r.length()-1) == ']')      return types::VECTOR;
   if (r.find_first_not_of("0123456789") == string::npos) return types::INT;
 
   bool dot {false};
@@ -96,17 +114,35 @@ String* create_string(const string& r) {
 
   return new String(val);
 }
+
+Vector* create_vector(const string& r) {
+  string         inner;
+  vector<string> splitted;
+  vector<Param>  params;
+  
+  if (r.length() <= 2) inner = "";
+  else                 inner = r.substr(1, r.length() - 2);
+
+  smart_split(inner, splitted);
+
+  for (size_t i=0; i<splitted.size(); i++){
+    params.push_back(Param("_"+std::to_string(i)+"="+splitted[i]));
+  }
+
+  return new Vector(params);
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 Param::Param(const string& raw) {
   string left  = raw;
   string right = raw;
 
-  truncate(left, true);
-  truncate(right, false);
   smart_strip(left);
   smart_strip(right);
+  truncate(left, true);
+  truncate(right, false);
   
+
   if ((left != right) and check_name(left)) {
     this->name = left;
     types type = parse_type(right);
@@ -117,6 +153,7 @@ Param::Param(const string& raw) {
       case INT:    this->content = create_int(right);    break;
       case FLOAT:  this->content = create_float(right);  break;
       case STRING: this->content = create_string(right); break;
+      case VECTOR: this->content = create_vector(right); break;
       /* ... */
       default: allocated = false;
     }

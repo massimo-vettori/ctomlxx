@@ -1,0 +1,6 @@
+[test]
+  bool   = false
+  int    = 9
+  float  = 3.33
+  string = "Hello there!"
+  array  = [1000, "2", [3, 4, 5]] # Mixed type array

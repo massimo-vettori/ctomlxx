@@ -1,17 +1,18 @@
 SUFFIXES += .d
 
 CXX    = g++
-CFLAGS = -pedantic -std=c++11 -Wall -Wextra -I includes/ -fpic
+CFLAGS = -pedantic -std=c++11 -Wall -Wextra -I includes/
 DFLAGS = -MT $@ -MMD -MF .build/deps/$*.d
 
 srcs := $(shell find src/ -name *.cpp) # tested only in linux
 objs := $(patsubst src/%.cpp, .build/obj/%.o, $(srcs))
 deps := $(patsubst src/%.cpp, .build/deps/%.d, $(srcs))
 
-EXECUTABLE_NAME = parser # change this to the actual name of your executable
-LIBRARY_NAME = libtoml.a
+EXECUTABLE_NAME = test
+LIBRARY_NAME    = libtoml.a
 
 
+all: CFLAGS += -fpic
 all: .build/lib/$(LIBRARY_NAME)
 
 .build/lib/$(LIBRARY_NAME): $(objs)
@@ -44,7 +45,30 @@ reset:
 	@$(RM) -r .build/
 .PHONY: reset
 
--include $(deps)
 
-# Makefile created by Massimo Vettori (github - https://github.com/massimo-vettori)
-# find it in its source gist: https://gist.github.com/massimo-vettori/adff1afd6b1b933cd77f782186bda038
+## Debug ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+
+debug: CFLAGS += -ggdb -g3
+debug: LFLAGS  = -ggdb -g3
+debug: .build/$(EXECUTABLE_NAME)
+.PHONY: debug
+
+.build/obj/test.o: test/test.cpp includes/ctomlxx.h
+	@mkdir -p .build/obj
+	@$(CXX) -pedantic -ggdb -g3 -std=c++11 -Wall -Wextra -I ../includes/ -c $< -o $@
+
+
+.build/$(EXECUTABLE_NAME): .build/obj/test.o $(objs)
+	@echo " [Link]: ..... linking final executable '$@'"
+	@$(CXX) $(LFLAGS) -o $@ $^
+
+leak-check: debug
+	@valgrind --track-origins=yes --leak-check=full -s --error-exitcode=1 .build/$(EXECUTABLE_NAME)
+.PHONY: leak-check
+
+test: debug
+	@./.build/$(EXECUTABLE_NAME)
+.PHONY: run
+
+## Debug ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+-include $(deps)
