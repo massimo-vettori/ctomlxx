@@ -13,5 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: build
-      run: make all
+    - name: install valgrind 
+      run: sudo apt install valgrind
+    - name: build for debug
+      run: make debug
+    - name: check for memory leaks
+      run: make leak-check
+    
