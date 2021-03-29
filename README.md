@@ -8,7 +8,7 @@ This `c++` TOML parser library can allow your code to load external `.toml` file
   - [x] `number` type recognition
   - [x] `floating point` type recognition
   - [x] `string` type recognition
-  - [ ] `inline array` type recognition
+  - [x] `inline array` type recognition
   - [x] `sections` recognition
   - [ ] `inline table` type recognition
   - [ ] `date/time` type recognition
