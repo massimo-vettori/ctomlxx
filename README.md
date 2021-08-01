@@ -13,8 +13,6 @@ This `c++` TOML parser library can allow your code to load external `.toml` file
   - [ ] `inline table` type recognition
   - [ ] `date/time` type recognition
 
-> Soon I will create a full documentation for this library (will be stored in the wiki)
-
 ### Install:
 Inside the zipped folder in the lastest release you can find a `lib` folder and a `includes` folder.
 Now you can install the library in 2 different ways (choose one, don't use both)
